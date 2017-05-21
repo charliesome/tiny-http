@@ -284,6 +284,9 @@ pub enum Method {
     /// `PATCH`
     Patch,
 
+    /// `SOURCE`
+    Source,
+
     /// Request methods not standardized by the IETF
     NonStandard(AsciiString),
 }
@@ -300,6 +303,7 @@ impl Method {
             Method::Options => "OPTIONS",
             Method::Trace => "TRACE",
             Method::Patch => "PATCH",
+            Method::Source => "SOURCE",
             Method::NonStandard(ref s) => s.as_str(),
         }
     }
@@ -319,6 +323,7 @@ impl FromStr for Method {
             s if s.eq_ignore_ascii_case("OPTIONS") => Method::Options,
             s if s.eq_ignore_ascii_case("TRACE") => Method::Trace,
             s if s.eq_ignore_ascii_case("PATCH") => Method::Patch,
+            s if s.eq_ignore_ascii_case("SOURCE") => Method::Source,
             s => {
                 let ascii_string = try!(AsciiString::from_ascii(s).map_err(|_| () ));
                 Method::NonStandard(ascii_string)
@@ -347,6 +352,7 @@ impl PartialEq for Method {
             (&Method::Options, &Method::Options) => true,
             (&Method::Trace, &Method::Trace) => true,
             (&Method::Patch, &Method::Patch) => true,
+            (&Method::Source, &Method::Source) => true,
             _ => false,
         }
     }
