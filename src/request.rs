@@ -189,6 +189,10 @@ pub fn new_request<R, W>(secure: bool, method: Method, path: String,
             // over the message (RFC2616 #3.6)
             Box::new(Decoder::new(source_data)) as Box<Read + Send + 'static>
 
+        } else if method == Method::Source {
+            // icecast SOURCE requests have body streams
+            Box::new(source_data) as Box<Read + Send + 'static>
+
         } else {
             // if we have neither a Content-Length nor a Transfer-Encoding,
             // assuming that we have no data
