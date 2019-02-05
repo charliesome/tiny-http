@@ -13,7 +13,6 @@
 // limitations under the License.
 
 use ascii::{AsciiString};
-use std::ascii::AsciiExt;
 
 use std::io::Error as IoError;
 use std::io::Result as IoResult;
@@ -43,7 +42,7 @@ pub struct ClientConnection {
     sink: SequentialWriterBuilder<BufWriter<RefinedTcpStream>>,
 
     // Reader to read the next header from
-	next_header_source: SequentialReader<BufReader<RefinedTcpStream>>,
+    next_header_source: SequentialReader<BufReader<RefinedTcpStream>>,
 
     // set to true if we know that the previous request is the last one
     no_more_requests: bool,
@@ -235,7 +234,7 @@ impl Iterator for ClientConnection {
             {
                 let connection_header = rq.headers().iter()
                     .find(|h| h.field.equiv(&"Connection"))
-                    .map(|h| AsRef::<str>::as_ref(h.value.as_ref()));
+                    .map(|h| h.value.as_str());
 
                 let lowercase = connection_header.map(|h| h.to_ascii_lowercase());
 
